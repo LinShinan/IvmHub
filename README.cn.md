@@ -1,10 +1,11 @@
-# IvmHub 
+# IvmHub
 
 [中文](README.cn.md) | [English](README.md)
 
-## Configuration
-For safety reasons, application.yml and application-druid.yml are not 
-included in the repository.
+## 配置
+为了安全起见，application.yml 和 application-druid.yml 文件未包含在仓库中。
+请自行按照个人情况将 application.yml 和 application-druid.yml 文件添加到
+.\stone-admin\src\main\resources\下。
 
 
 ```yaml
