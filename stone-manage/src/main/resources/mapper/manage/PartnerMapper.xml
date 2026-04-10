@@ -4,33 +4,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stone.manage.mapper.PartnerMapper">
     
-    <resultMap type="Partner" id="PartnerResult">
-        <result property="id"    column="id"    />
-        <result property="partnerName"    column="partner_name"    />
-        <result property="contactPerson"    column="contact_person"    />
-        <result property="contactPhone"    column="contact_phone"    />
-        <result property="profitRatio"    column="profit_ratio"    />
-        <result property="account"    column="account"    />
-        <result property="password"    column="password"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="updateBy"    column="update_by"    />
-        <result property="remark"    column="remark"    />
-    </resultMap>
+<!--    <resultMap type="PartnerVO" id="PartnerResult">-->
+<!--        <result property="id"    column="id"    />-->
+<!--        <result property="partnerName"    column="partner_name"    />-->
+<!--        <result property="contactPerson"    column="contact_person"    />-->
+<!--        <result property="contactPhone"    column="contact_phone"    />-->
+<!--        <result property="profitRatio"    column="profit_ratio"    />-->
+<!--        <result property="account"    column="account"    />-->
+<!--        <result property="nodeCount" column="node_count"/>-->
+<!--        <result property="password"    column="password"    />-->
+<!--        <result property="createTime"    column="create_time"    />-->
+<!--        <result property="updateTime"    column="update_time"    />-->
+<!--        <result property="createBy"    column="create_by"    />-->
+<!--        <result property="updateBy"    column="update_by"    />-->
+<!--        <result property="remark"    column="remark"    />-->
+<!--    </resultMap>-->
 
     <sql id="selectPartnerVo">
         select id, partner_name, contact_person, contact_phone, profit_ratio, account, password, create_time, update_time, create_by, update_by, remark from tb_partner
     </sql>
 
-    <select id="selectPartnerList" parameterType="Partner" resultMap="PartnerResult">
-        <include refid="selectPartnerVo"/>
-        <where>  
-            <if test="partnerName != null  and partnerName != ''"> and partner_name like concat('%', #{partnerName}, '%')</if>
+    <select id="selectPartnerVOList" parameterType="com.stone.manage.domain.Partner" resultType="com.stone.manage.domain.VO.PartnerVO">
+        select p.*,count(n.id) as node_count from tb_partner p left join tb_node n on p.id = n.partner_id
+        <where>
+            <if test="partnerName != null  and partnerName != ''"> and p.partner_name like concat('%', #{partnerName}, '%')</if>
         </where>
+        group by p.id
     </select>
     
-    <select id="selectPartnerById" parameterType="Long" resultMap="PartnerResult">
+    <select id="selectPartnerById" parameterType="Long"  resultType="com.stone.manage.domain.VO.PartnerVO">
         <include refid="selectPartnerVo"/>
         where id = #{id}
     </select>

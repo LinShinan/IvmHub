@@ -2,6 +2,7 @@ package com.stone.manage.service;
 
 import java.util.List;
 import com.stone.manage.domain.Partner;
+import com.stone.manage.domain.VO.PartnerVO;
 
 /**
  * 合作商管理Service接口
@@ -25,7 +26,7 @@ public interface IPartnerService
      * @param partner 合作商管理
      * @return 合作商管理集合
      */
-    public List<Partner> selectPartnerList(Partner partner);
+    public List<PartnerVO> selectPartnerVOList(Partner partner);
 
     /**
      * 新增合作商管理

@@ -2,6 +2,7 @@ package com.stone.manage.mapper;
 
 import java.util.List;
 import com.stone.manage.domain.Partner;
+import com.stone.manage.domain.VO.PartnerVO;
 
 /**
  * 合作商管理Mapper接口
@@ -19,13 +20,21 @@ public interface PartnerMapper
      */
     public Partner selectPartnerById(Long id);
 
+//    /**
+//     * 查询合作商管理列表
+//     *
+//     * @param partner 合作商管理
+//     * @return 合作商管理集合
+//     */
+//    public List<Partner> selectPartnerList(Partner partner);
+
     /**
      * 查询合作商管理列表
-     * 
+     *
      * @param partner 合作商管理
      * @return 合作商管理集合
      */
-    public List<Partner> selectPartnerList(Partner partner);
+    public List<PartnerVO> selectPartnerVOList(Partner partner);
 
     /**
      * 新增合作商管理

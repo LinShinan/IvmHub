@@ -2,6 +2,8 @@ package com.stone.manage.service.impl;
 
 import java.util.List;
 import com.stone.common.utils.DateUtils;
+import com.stone.common.utils.SecurityUtils;
+import com.stone.manage.domain.VO.PartnerVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.PartnerMapper;
@@ -39,9 +41,14 @@ public class PartnerServiceImpl implements IPartnerService
      * @return 合作商管理
      */
     @Override
-    public List<Partner> selectPartnerList(Partner partner)
+    public List<PartnerVO> selectPartnerVOList(Partner partner)
     {
-        return partnerMapper.selectPartnerList(partner);
+        List<PartnerVO> partnerVO = partnerMapper.selectPartnerVOList(partner);
+        for(PartnerVO p: partnerVO){
+            p.setPassword("******");
+        }
+        return partnerVO;
+
     }
 
     /**
@@ -53,6 +60,8 @@ public class PartnerServiceImpl implements IPartnerService
     @Override
     public int insertPartner(Partner partner)
     {
+        // 密码加密
+        partner.setPassword(SecurityUtils.encryptPassword(partner.getPassword()));
         partner.setCreateTime(DateUtils.getNowDate());
         return partnerMapper.insertPartner(partner);
     }
