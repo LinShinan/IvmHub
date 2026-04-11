@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         group by p.id
     </select>
     
-    <select id="selectPartnerById" parameterType="Long"  resultType="com.stone.manage.domain.VO.PartnerVO">
+    <select id="selectPartnerById" parameterType="Long"  resultType="com.stone.manage.domain.Partner">
         <include refid="selectPartnerVo"/>
         where id = #{id}
     </select>

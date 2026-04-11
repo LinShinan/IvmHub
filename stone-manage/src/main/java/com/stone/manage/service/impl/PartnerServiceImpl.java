@@ -31,7 +31,11 @@ public class PartnerServiceImpl implements IPartnerService
     @Override
     public Partner selectPartnerById(Long id)
     {
-        return partnerMapper.selectPartnerById(id);
+        Partner partner = partnerMapper.selectPartnerById(id);
+        if(partner!=null){
+            partner.setPassword("******");
+        }
+        return partner;
     }
 
     /**
@@ -48,7 +52,6 @@ public class PartnerServiceImpl implements IPartnerService
             p.setPassword("******");
         }
         return partnerVO;
-
     }
 
     /**

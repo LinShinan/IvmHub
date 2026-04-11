@@ -135,4 +135,12 @@ public class GlobalExceptionHandler
     {
         return AjaxResult.error("演示模式，不允许操作");
     }
+
+
+    @ExceptionHandler(BusinessException.class)
+    public AjaxResult handleBusinessException(BusinessException e){
+        log.warn("业务异常:", e);
+        String message = e.getMessage();
+        return AjaxResult.error(message);
+    }
 }

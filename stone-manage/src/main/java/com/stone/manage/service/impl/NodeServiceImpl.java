@@ -39,9 +39,9 @@ public class NodeServiceImpl implements INodeService
      * @return 点位管理
      */
     @Override
-    public List<Node> selectNodeList(Node node)
+    public List<Node> selectNodeVOList(Node node)
     {
-        return nodeMapper.selectNodeList(node);
+        return nodeMapper.selectNodeVOList(node);
     }
 
     /**

@@ -52,6 +52,18 @@ public class PartnerController extends BaseController
     }
 
     /**
+     * 查询所有合作商管理列表
+     */
+    @PreAuthorize("@ss.hasPermi('manage:partner:list')")
+    @GetMapping("/list/all")
+    public TableDataInfo listAll()
+    {
+        List<PartnerVO> list = partnerService.selectPartnerVOList(null);
+        log.info("查询所有合作商{}",list);
+        return getDataTable(list);
+    }
+
+    /**
      * 导出合作商管理列表
      */
     @PreAuthorize("@ss.hasPermi('manage:partner:export')")

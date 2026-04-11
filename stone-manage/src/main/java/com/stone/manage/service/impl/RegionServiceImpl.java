@@ -2,7 +2,10 @@ package com.stone.manage.service.impl;
 
 import java.util.List;
 import com.stone.common.utils.DateUtils;
+import com.stone.framework.web.exception.BusinessException;
+import com.stone.manage.domain.Node;
 import com.stone.manage.domain.VO.RegionVO;
+import com.stone.manage.mapper.NodeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.RegionMapper;
@@ -20,6 +23,9 @@ public class RegionServiceImpl implements IRegionService
 {
     @Autowired
     private RegionMapper regionMapper;
+
+    @Autowired
+    private NodeMapper nodeMapper;
 
     /**
      * 查询区域管理
@@ -80,6 +86,10 @@ public class RegionServiceImpl implements IRegionService
     @Override
     public int deleteRegionByIds(Long[] ids)
     {
+        int count = nodeMapper.countByRegionIds(ids);
+        if(count>0){
+            throw new BusinessException("存在点位信息，不允许删除");
+        }
         return regionMapper.deleteRegionByIds(ids);
     }
 
@@ -92,6 +102,10 @@ public class RegionServiceImpl implements IRegionService
     @Override
     public int deleteRegionById(Long id)
     {
+        int count = nodeMapper.countByRegionIds(new Long[]{id});
+        if(count>0){
+            throw new BusinessException("存在点位信息，不允许删除");
+        }
         return regionMapper.deleteRegionById(id);
     }
 }

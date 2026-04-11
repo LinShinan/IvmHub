@@ -21,11 +21,11 @@ public interface INodeService
 
     /**
      * 查询点位管理列表
-     * 
+     *
      * @param node 点位管理
      * @return 点位管理集合
      */
-    public List<Node> selectNodeList(Node node);
+    List<Node> selectNodeVOList(Node node);
 
     /**
      * 新增点位管理

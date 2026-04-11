@@ -42,7 +42,7 @@ public class NodeController extends BaseController
     public TableDataInfo list(Node node)
     {
         startPage();
-        List<Node> list = nodeService.selectNodeList(node);
+        List<Node> list = nodeService.selectNodeVOList(node);
         return getDataTable(list);
     }
 
@@ -54,7 +54,7 @@ public class NodeController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, Node node)
     {
-        List<Node> list = nodeService.selectNodeList(node);
+        List<Node> list = nodeService.selectNodeVOList(node);
         ExcelUtil<Node> util = new ExcelUtil<Node>(Node.class);
         util.exportExcel(response, list, "点位管理数据");
     }
@@ -68,6 +68,18 @@ public class NodeController extends BaseController
     {
         return success(nodeService.selectNodeById(id));
     }
+
+    /**
+     * 根据区域ID获取点位管理列表
+      * @param node 区域ID
+     */
+    @PreAuthorize("@ss.hasPermi('manage:node:list')")
+    @GetMapping("/all")
+    public TableDataInfo getByRegionId(Node node) {
+        List<Node> nodes = nodeService.selectNodeVOList(node);
+        return getDataTable(nodes);
+    }
+
 
     /**
      * 新增点位管理

@@ -3,7 +3,10 @@ package com.stone.manage.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.stone.manage.domain.Node;
 import com.stone.manage.domain.VO.RegionVO;
+import com.stone.manage.service.INodeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +34,12 @@ import com.stone.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/manage/region")
+@Slf4j
 public class RegionController extends BaseController
 {
     @Autowired
     private IRegionService regionService;
+
 
     /**
      * 查询区域管理列表
@@ -47,6 +52,21 @@ public class RegionController extends BaseController
         List<RegionVO> list = regionService.selectRegionVOList(region);
         return getDataTable(list);
     }
+
+    /**
+     * 查询所有区域列表
+     */
+    @PreAuthorize("@ss.hasPermi('manage:region:list')")
+    @GetMapping("/list/all")
+    public TableDataInfo listAll()
+    {
+        List<RegionVO> list = regionService.selectRegionVOList(null);
+        log.info("查询所有区域{}",list);
+        return getDataTable(list);
+    }
+
+
+
 
     /**
      * 导出区域管理列表

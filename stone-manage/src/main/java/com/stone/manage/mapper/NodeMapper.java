@@ -2,6 +2,8 @@ package com.stone.manage.mapper;
 
 import java.util.List;
 import com.stone.manage.domain.Node;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 点位管理Mapper接口
@@ -25,7 +27,7 @@ public interface NodeMapper
      * @param node 点位管理
      * @return 点位管理集合
      */
-    List<Node> selectNodeList(Node node);
+    List<Node> selectNodeVOList(Node node);
 
     /**
      * 新增点位管理
@@ -58,4 +60,7 @@ public interface NodeMapper
      * @return 结果
      */
     int deleteNodeByIds(Long[] ids);
+
+
+    int countByRegionIds(@Param("regionIds") Long[] regionIds);
 }
