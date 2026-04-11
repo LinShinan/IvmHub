@@ -128,4 +128,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </select>
+
+    <select id="countByPartnerIds" resultType="int">
+        select count(*) from tb_node where partner_id in
+        <foreach item="id" collection="partnerIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

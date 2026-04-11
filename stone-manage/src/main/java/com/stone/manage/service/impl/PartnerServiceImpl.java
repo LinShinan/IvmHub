@@ -3,7 +3,9 @@ package com.stone.manage.service.impl;
 import java.util.List;
 import com.stone.common.utils.DateUtils;
 import com.stone.common.utils.SecurityUtils;
+import com.stone.framework.web.exception.BusinessException;
 import com.stone.manage.domain.VO.PartnerVO;
+import com.stone.manage.mapper.NodeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.PartnerMapper;
@@ -21,6 +23,9 @@ public class PartnerServiceImpl implements IPartnerService
 {
     @Autowired
     private PartnerMapper partnerMapper;
+
+    @Autowired
+    private NodeMapper nodeMapper;
 
     /**
      * 查询合作商管理
@@ -91,6 +96,10 @@ public class PartnerServiceImpl implements IPartnerService
     @Override
     public int deletePartnerByIds(Long[] ids)
     {
+        int count = nodeMapper.countByPartnerIds(ids);
+        if(count>0){
+            throw new BusinessException("关联点位，不允许删除");
+        }
         return partnerMapper.deletePartnerByIds(ids);
     }
 
@@ -103,6 +112,10 @@ public class PartnerServiceImpl implements IPartnerService
     @Override
     public int deletePartnerById(Long id)
     {
+        int count = nodeMapper.countByPartnerIds(new Long[]{id});
+        if(count>0){
+            throw new BusinessException("关联点位，不允许删除");
+        }
         return partnerMapper.deletePartnerById(id);
     }
 }

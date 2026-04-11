@@ -5,12 +5,14 @@ import com.stone.common.utils.DateUtils;
 import com.stone.framework.web.exception.BusinessException;
 import com.stone.manage.domain.Node;
 import com.stone.manage.domain.VO.RegionVO;
+import com.stone.manage.mapper.EmpMapper;
 import com.stone.manage.mapper.NodeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.RegionMapper;
 import com.stone.manage.domain.Region;
 import com.stone.manage.service.IRegionService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 区域管理Service业务层处理
@@ -26,6 +28,9 @@ public class RegionServiceImpl implements IRegionService
 
     @Autowired
     private NodeMapper nodeMapper;
+
+    @Autowired
+    private EmpMapper empMapper;
 
     /**
      * 查询区域管理
@@ -70,11 +75,17 @@ public class RegionServiceImpl implements IRegionService
      * @param region 区域管理
      * @return 结果
      */
+    @Transactional(rollbackFor=Exception.class)
     @Override
     public int updateRegion(Region region)
     {
         region.setUpdateTime(DateUtils.getNowDate());
-        return regionMapper.updateRegion(region);
+        int resultRows = regionMapper.updateRegion(region);
+        //同步更新员工表中的区域名称
+        if(resultRows > 0){
+            empMapper.updateRegionNameByRegionId(region.getRegionName(), region.getId());
+        }
+        return resultRows;
     }
 
     /**

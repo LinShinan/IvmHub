@@ -61,6 +61,18 @@ public interface NodeMapper
      */
     int deleteNodeByIds(Long[] ids);
 
-
+    /**
+     * 根据区域ID统计点位数量
+     *
+     * @param regionIds 区域ID数组
+     * @return 点位数量
+     */
     int countByRegionIds(@Param("regionIds") Long[] regionIds);
+
+    /**
+     * 根据合作商ID统计点位数量
+     * @param partnerIds
+     * @return
+     */
+    int countByPartnerIds(@Param("partnerIds") Long[] partnerIds);
 }
