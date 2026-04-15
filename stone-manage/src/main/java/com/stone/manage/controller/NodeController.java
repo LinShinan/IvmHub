@@ -75,7 +75,7 @@ public class NodeController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('manage:node:list')")
     @GetMapping("/all")
-    public TableDataInfo getByRegionId(Node node) {
+    public TableDataInfo listByNode(Node node) {
         List<Node> nodes = nodeService.selectNodeVOList(node);
         return getDataTable(nodes);
     }

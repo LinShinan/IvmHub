@@ -1,9 +1,9 @@
 package com.stone.common.constant;
 
 /**
- * 帝可得业务常量
+ * IvmHub业务常量
  */
-public class DkdContants {
+public class IvmConstants {
 
     /**
      * 工单类型：投放工单
