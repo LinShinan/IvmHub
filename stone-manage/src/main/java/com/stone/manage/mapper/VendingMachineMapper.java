@@ -60,6 +60,20 @@ public interface VendingMachineMapper
      */
     public int deleteVendingMachineByIds(Long[] ids);
 
-
+    /**
+     * 根据设备类型ID集合统计设备管理数量
+     *
+     * @param vmTypeIds 设备类型ID集合
+     * @return 结果
+     */
     public int countVendingMachineByVmTypeIds(@Param("vmTypeIds") Long[] vmTypeIds);
+
+    /**
+     * 根据策略ID集合统计设备管理数量
+     *
+     * @param policyIds 策略ID集合
+     * @return 结果
+     */
+    public int countVendingMachineByPolicyIds(@Param("policyIds") Long[] policyIds);
+
 }

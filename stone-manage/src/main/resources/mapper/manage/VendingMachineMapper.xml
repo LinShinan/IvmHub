@@ -54,6 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{vmTypeId}
         </foreach>
     </select>
+    <select id="countVendingMachineByPolicyIds" resultType="int">
+        select count(*) from tb_vending_machine where policy_id in
+        <foreach item="policyId" collection="policyIds" open="(" separator="," close=")">
+            #{policyId}
+        </foreach>
+    </select>
 
     <insert id="insertVendingMachine" parameterType="VendingMachine" useGeneratedKeys="true" keyProperty="id">
         insert into tb_vending_machine

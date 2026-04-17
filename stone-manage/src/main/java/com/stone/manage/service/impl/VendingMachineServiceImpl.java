@@ -125,9 +125,12 @@ public class VendingMachineServiceImpl implements IVendingMachineService
     @Override
     public int updateVendingMachine(VendingMachine vendingMachine)
     {
-        Node node = nodeMapper.selectNodeById(vendingMachine.getNodeId());
-        BeanUtils.copyProperties(node,vendingMachine,"id");
-        vendingMachine.setAddr(node.getAddress());
+        Long nodeId = vendingMachine.getNodeId();
+        if(nodeId != null){
+            Node node = nodeMapper.selectNodeById(nodeId);
+            BeanUtils.copyProperties(node,vendingMachine,"id");
+            vendingMachine.setAddr(node.getAddress());
+        }
         vendingMachine.setUpdateTime(DateUtils.getNowDate());
         return vendingMachineMapper.updateVendingMachine(vendingMachine);
     }
