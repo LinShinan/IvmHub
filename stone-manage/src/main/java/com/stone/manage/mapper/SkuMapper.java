@@ -67,4 +67,11 @@ public interface SkuMapper
      * @return
      */
     int insertSkuBatch(@Param("skus") List<Sku> skus);
+
+    /**
+     * 根据类目id集合统计商品数量
+     * @param classIds
+     * @return
+     */
+    int countByClassIds(@Param("classIds") Long[] classIds);
 }

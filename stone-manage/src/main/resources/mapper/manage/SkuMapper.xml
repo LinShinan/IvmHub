@@ -34,7 +34,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectSkuVo"/>
         where sku_id = #{skuId}
     </select>
-        
+    <select id="countByClassIds" resultType="java.lang.Integer">
+        select count(*) from tb_sku where class_id in
+        <foreach item="classId" collection="classIds" open="(" separator="," close=")">
+            #{classId}
+        </foreach>
+    </select>
+
     <insert id="insertSku" parameterType="Sku" useGeneratedKeys="true" keyProperty="skuId">
         insert into tb_sku
         <trim prefix="(" suffix=")" suffixOverrides=",">

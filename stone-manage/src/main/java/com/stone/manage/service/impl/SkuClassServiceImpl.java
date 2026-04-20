@@ -1,6 +1,9 @@
 package com.stone.manage.service.impl;
 
 import java.util.List;
+
+import com.stone.framework.web.exception.BusinessException;
+import com.stone.manage.mapper.SkuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.SkuClassMapper;
@@ -18,6 +21,9 @@ public class SkuClassServiceImpl implements ISkuClassService
 {
     @Autowired
     private SkuClassMapper skuClassMapper;
+
+    @Autowired
+    private SkuMapper skuMapper;
 
     /**
      * 查询商品类型
@@ -76,18 +82,26 @@ public class SkuClassServiceImpl implements ISkuClassService
     @Override
     public int deleteSkuClassByClassIds(Long[] classIds)
     {
+        int count = skuMapper.countByClassIds(classIds);
+        if(count > 0){
+            throw new BusinessException("商品类型存在关联商品，不允许删除");
+        }
         return skuClassMapper.deleteSkuClassByClassIds(classIds);
     }
 
     /**
      * 删除商品类型信息
      * 
-     * @param classId 商品类型主键
+     * @param classId 商品类型主键git
      * @return 结果
      */
     @Override
     public int deleteSkuClassByClassId(Long classId)
     {
+        int count = skuMapper.countByClassIds(new Long[]{classId});
+        if(count > 0){
+            throw new BusinessException("商品分类下有"+count+"个商品，不允许删除");
+        }
         return skuClassMapper.deleteSkuClassByClassId(classId);
     }
 }
