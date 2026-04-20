@@ -3,6 +3,7 @@ package com.stone.framework.web.exception;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -142,5 +143,14 @@ public class GlobalExceptionHandler
         log.warn("业务异常:", e);
         String message = e.getMessage();
         return AjaxResult.error(message);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public AjaxResult handleDataIntegrityViolationException(DataIntegrityViolationException e){
+        String message = e.getMessage();
+        if (message != null && message.contains("Duplicate entry")) {
+            return AjaxResult.error("数据已存在");
+        }
+        return AjaxResult.error("数据完整性异常");
     }
 }

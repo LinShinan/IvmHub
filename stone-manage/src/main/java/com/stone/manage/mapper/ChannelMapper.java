@@ -2,7 +2,9 @@ package com.stone.manage.mapper;
 
 import java.util.List;
 import com.stone.manage.domain.Channel;
+import com.stone.manage.domain.VO.ChannelVO;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 售货机货道Mapper接口
@@ -66,4 +68,24 @@ public interface ChannelMapper
      * @return 结果
      */
     public int deleteChannelByIds(Long[] ids);
+
+
+    /**
+     * 根据skuIds查询售货机货道数量
+     *
+     * @param skuIds skuIds
+     * @return 结果
+     */
+    public int countChannelBySkuIds(@Param("skuIds") Long[] skuIds);
+
+    /**
+     * 根据innerCode查询售货机货道
+     *
+     * @param innerCode innerCode
+     * @return 售货机货道
+     */
+    List<ChannelVO> listChannelByInnerCode(String innerCode);
+
+
+    int updateChannelBatch(@Param("channelList") List<Channel> channelList);
 }

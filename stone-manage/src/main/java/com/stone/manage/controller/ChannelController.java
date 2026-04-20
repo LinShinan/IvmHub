@@ -2,6 +2,9 @@ package com.stone.manage.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.stone.manage.domain.DTO.ChannelConfigDTO;
+import com.stone.manage.domain.VO.ChannelVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,4 +104,26 @@ public class ChannelController extends BaseController
     {
         return toAjax(channelService.deleteChannelByIds(ids));
     }
+
+
+    /**
+     * 根据innerCode编号查询货道信息
+     */
+    @PreAuthorize("@ss.hasPermi('manage:channel:list')")
+    @GetMapping("/list/{innerCode}")
+    public AjaxResult listByInnerCode(@PathVariable("innerCode") String innerCode){
+        List<ChannelVO> list =channelService.listChannelByInnerCode(innerCode);
+        return success(list);
+    }
+
+    /**
+     *  批量设置货道信息
+     * @param channelConfigDTO
+     * @return
+     */
+    @PutMapping("/config")
+    public AjaxResult setChannel(@RequestBody ChannelConfigDTO channelConfigDTO){
+        return toAjax(channelService.setChannel(channelConfigDTO));
+    }
+
 }

@@ -2,6 +2,8 @@ package com.stone.manage.service;
 
 import java.util.List;
 import com.stone.manage.domain.Channel;
+import com.stone.manage.domain.DTO.ChannelConfigDTO;
+import com.stone.manage.domain.VO.ChannelVO;
 
 /**
  * 售货机货道Service接口
@@ -58,4 +60,18 @@ public interface IChannelService
      * @return 结果
      */
     public int deleteChannelById(Long id);
+
+    /**
+     * 根据内部编号查询货道信息
+     * @param innerCode
+     * @return
+     */
+    List<ChannelVO> listChannelByInnerCode(String innerCode);
+
+    /**
+     * 设置货道信息
+     * @param channelConfigDTO
+     * @return
+     */
+    int setChannel(ChannelConfigDTO channelConfigDTO);
 }

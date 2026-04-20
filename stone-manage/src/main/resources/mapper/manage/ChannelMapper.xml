@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.stone.manage.mapper.ChannelMapper">
     
-    <resultMap type="Channel" id="ChannelResult">
+    <resultMap type="com.stone.manage.domain.VO.ChannelVO" id="ChannelResult">
         <result property="id"    column="id"    />
         <result property="channelCode"    column="channel_code"    />
         <result property="skuId"    column="sku_id"    />
@@ -15,6 +15,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="lastSupplyTime"    column="last_supply_time"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+<!--        <association property="sku" javaType="com.stone.manage.domain.Sku" column="sku_id" select="com.stone.manage.mapper.SkuMapper.selectSkuBySkuId"/>-->
+<!--        为了不n+1查询,换成下面的-->
+        <association property="sku" javaType="com.stone.manage.domain.Sku">
+            <id property="skuId" column="sku_id" />
+            <result property="skuName" column="sku_name" />
+            <result property="skuImage" column="sku_image" />
+            <result property="brandName" column="brand_name" />
+            <result property="unit" column="unit" />
+            <result property="price" column="price" />
+            <result property="classId" column="class_id" />
+            <result property="isDiscount" column="is_discount" />
+        </association>
     </resultMap>
 
     <sql id="selectChannelVo">
@@ -38,7 +50,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectChannelVo"/>
         where id = #{id}
     </select>
-        
+
+
+    <select id="countChannelBySkuIds" resultType="int">
+        select count(*) from tb_channel
+        where sku_id in
+        <foreach item="skuId" collection="skuIds" open="(" separator="," close=")">
+            #{skuId}
+        </foreach>
+    </select>
+    <select id="listChannelByInnerCode" resultMap="ChannelResult">
+        select c.id, c.channel_code, c.sku_id, c.vm_id, c.inner_code,
+        c.max_capacity, c.current_capacity, c.last_supply_time,
+        c.create_time, c.update_time,
+        s.sku_name, s.sku_image, s.brand_name, s.unit, s.price, s.class_id, s.is_discount
+        from tb_channel c
+        left join tb_sku s on c.sku_id = s.sku_id
+        where inner_code = #{innerCode}
+    </select>
+
     <insert id="insertChannel" parameterType="Channel" useGeneratedKeys="true" keyProperty="id">
         insert into tb_channel
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -88,6 +118,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>
         where id = #{id}
+    </update>
+
+    <update id="updateChannelBatch">
+        <foreach collection="channelList" item="item" separator=";">
+            update tb_channel
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="item.channelCode != null and item.channelCode != ''">channel_code = #{item.channelCode},</if>
+                <if test="item.skuId != null">sku_id = #{item.skuId},</if>
+                <if test="item.vmId != null">vm_id = #{item.vmId},</if>
+                <if test="item.innerCode != null and item.innerCode != ''">inner_code = #{item.innerCode},</if>
+                <if test="item.maxCapacity != null">max_capacity = #{item.maxCapacity},</if>
+                <if test="item.currentCapacity != null">current_capacity = #{item.currentCapacity},</if>
+                <if test="item.lastSupplyTime != null">last_supply_time = #{item.lastSupplyTime},</if>
+                <if test="item.createTime != null">create_time = #{item.createTime},</if>
+                <if test="item.updateTime != null">update_time = #{item.updateTime},</if>
+            </trim>
+            where id = #{item.id}
+        </foreach>
     </update>
 
     <delete id="deleteChannelById" parameterType="Long">

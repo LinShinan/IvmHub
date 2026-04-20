@@ -154,6 +154,13 @@
             <version>3.17.4</version>
         </dependency>
 
+        <!-- EasyExcel -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
     </dependencies>
 
 </project>

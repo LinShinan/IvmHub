@@ -1,7 +1,13 @@
 package com.stone.manage.service.impl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.stone.common.utils.DateUtils;
+import com.stone.manage.domain.DTO.ChannelConfigDTO;
+import com.stone.manage.domain.DTO.ChannelSkuDTO;
+import com.stone.manage.domain.VO.ChannelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.ChannelMapper;
@@ -92,5 +98,45 @@ public class ChannelServiceImpl implements IChannelService
     public int deleteChannelById(Long id)
     {
         return channelMapper.deleteChannelById(id);
+    }
+
+    /**
+     * 根据内部编码查询售货机货道
+     *
+     * @param innerCode 内部编码
+     * @return 售货机货道
+     */
+    @Override
+    public List<ChannelVO> listChannelByInnerCode(String innerCode) {
+        return channelMapper.listChannelByInnerCode(innerCode);
+    }
+
+    /**
+     * 设置货道信息
+     *
+     * @param channelConfigDTO 货道信息
+     * @return 售货机货道
+     */
+    @Override
+    public int setChannel(ChannelConfigDTO channelConfigDTO){
+        //1.查询该售货机的所有货道
+        List<ChannelVO> channels = channelMapper.listChannelByInnerCode(channelConfigDTO.getInnerCode());
+
+        //2.设置map建立索引，将channelCode和Channel应起来，快速查询
+        Map<String,Channel> channelMap = channels.stream()
+                .collect(Collectors.toMap(Channel::getChannelCode, channel -> channel));
+
+        //3. 根据map批量设置货道信息
+        List<ChannelSkuDTO> channelList = channelConfigDTO.getChannelList();
+        List<Channel> updateList = channelList.stream().map(dto ->{
+            Channel channel = channelMap.get(dto.getChannelCode());
+            if(channel!=null){
+                channel.setSkuId(dto.getSkuId());
+                channel.setUpdateTime(DateUtils.getNowDate());
+            }
+            return channel;
+        }).filter(channel -> channel != null).toList();
+        //4. 批量更新货道信息
+        return channelMapper.updateChannelBatch(updateList);
     }
 }
