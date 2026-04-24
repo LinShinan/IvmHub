@@ -3,6 +3,7 @@ package com.stone.manage.mapper;
 import java.util.List;
 import com.stone.manage.domain.VendingMachine;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 设备管理Mapper接口
@@ -75,5 +76,13 @@ public interface VendingMachineMapper
      * @return 结果
      */
     public int countVendingMachineByPolicyIds(@Param("policyIds") Long[] policyIds);
+
+    /**
+     * 根据innerCode查询设备
+     * @param innerCode
+     * @return
+     */
+    @Select("select * from tb_vending_machine where inner_code = #{innerCode}")
+    public VendingMachine selectVendingMachineByInnerCode(String innerCode);
 
 }

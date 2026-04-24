@@ -2,6 +2,8 @@ package com.stone.manage.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.stone.common.constant.IvmConstants;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +102,27 @@ public class EmpController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(empService.deleteEmpByIds(ids));
+    }
+
+    /**
+     * 根据售货机查询运营人员列表
+     * @param innerCode
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('manage:emp:list')")
+    @GetMapping("/businessList/{innerCode}")
+    public AjaxResult businessList(@PathVariable("innerCode") String innerCode){
+        return success(empService.selectEmpsByVmAndRole(innerCode, IvmConstants.ROLE_CODE_BUSINESS));
+    }
+
+    /**
+     * 根据售货机查询运营人员列表
+     * @param innerCode
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('manage:emp:list')")
+    @GetMapping("/operationList/{innerCode}")
+    public AjaxResult operationList(@PathVariable("innerCode") String innerCode){
+        return success(empService.selectEmpsByVmAndRole(innerCode, IvmConstants.ROLE_CODE_OPERATOR));
     }
 }

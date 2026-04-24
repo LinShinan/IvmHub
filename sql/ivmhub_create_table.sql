@@ -288,7 +288,7 @@ CREATE TABLE `tb_task` (
   `user_id` int DEFAULT NULL COMMENT '执行人id',
   `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '执行人名称',
   `region_id` bigint DEFAULT NULL COMMENT '所属区域Id',
-  `desc` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
+  `descri` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '备注',
   `product_type_id` int DEFAULT '1' COMMENT '工单类型id',
   `assignor_id` int DEFAULT NULL COMMENT '指派人Id',
   `addr` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '地址',

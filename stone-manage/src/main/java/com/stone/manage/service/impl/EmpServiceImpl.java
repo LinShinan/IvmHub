@@ -1,10 +1,15 @@
 package com.stone.manage.service.impl;
 
 import java.util.List;
+
+import com.stone.common.constant.IvmConstants;
 import com.stone.common.utils.DateUtils;
+import com.stone.framework.web.exception.BusinessException;
 import com.stone.manage.domain.Role;
+import com.stone.manage.domain.VendingMachine;
 import com.stone.manage.mapper.RegionMapper;
 import com.stone.manage.mapper.RoleMapper;
+import com.stone.manage.mapper.VendingMachineMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.stone.manage.mapper.EmpMapper;
@@ -28,6 +33,9 @@ public class EmpServiceImpl implements IEmpService
 
     @Autowired
     private RoleMapper roleMapper;
+
+    @Autowired
+    private VendingMachineMapper vendingMachineMapper;
 
     /**
      * 查询人员列表
@@ -116,5 +124,28 @@ public class EmpServiceImpl implements IEmpService
     public int deleteEmpById(Long id)
     {
         return empMapper.deleteEmpById(id);
+    }
+
+    /**
+     * 根据innerCode查询售货机的人员列表
+     * @param innerCode
+     * @return 人员列表
+     */
+    @Override
+    public List<Emp> selectEmpsByVmAndRole(String innerCode, String roleCode) {
+        //1. 根据innerCode查找售货机信息
+        VendingMachine vm = vendingMachineMapper.selectVendingMachineByInnerCode(innerCode);
+
+        //2. 根据售货机信息确定点位->区域->人员->筛选启用的xx人员
+        //由于冗余字段，故可以->区域->找人员
+        if(vm==null){
+            throw new BusinessException("售货机不存在");
+        }
+        Emp emp =new Emp();
+        emp.setRegionId(vm.getRegionId());
+        emp.setRoleCode(roleCode);
+        emp.setStatus(IvmConstants.EMP_STATUS_NORMAL);
+        return empMapper.selectEmpList(emp);
+
     }
 }

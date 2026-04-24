@@ -58,4 +58,14 @@ public interface IEmpService
      * @return 结果
      */
     public int deleteEmpById(Long id);
+
+
+    /**
+     * 根据售货机和角色查询人员列表
+     *
+     * @param innerCode 虚拟机内码
+     * @param roleCode 角色代码
+     * @return 人员列表
+     */
+    List<Emp> selectEmpsByVmAndRole(String innerCode, String roleCode);
 }
