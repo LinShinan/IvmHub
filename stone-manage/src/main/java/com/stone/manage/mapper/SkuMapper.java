@@ -2,6 +2,7 @@ package com.stone.manage.mapper;
 
 import java.util.List;
 import com.stone.manage.domain.Sku;
+import com.stone.manage.domain.VO.ProductSalesVO;
 import com.stone.manage.domain.VO.SkuVO;
 import org.apache.ibatis.annotations.Param;
 

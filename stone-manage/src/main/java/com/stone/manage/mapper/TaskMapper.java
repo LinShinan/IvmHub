@@ -4,6 +4,8 @@ import java.util.List;
 import com.stone.manage.domain.Task;
 import com.stone.manage.domain.TaskDetails;
 import com.stone.manage.domain.VO.TaskVO;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 工单Mapper接口
@@ -61,6 +63,16 @@ public interface TaskMapper
      * @return 工单集合
      */
     public List<TaskVO> selectTaskVOList(Task task);
+
+    /**
+     * 根据机器InnerCode和产品类型ID,工单状态查询工单数量
+     * @param innerCode
+     * @param productTypeId
+     * @param taskStatus
+     * @return
+     */
+    @Select("select count(*) from tb_task where inner_code = #{innerCode} and product_type_id = #{productTypeId} and task_status = #{taskStatus}")
+    int countByProductTypeId(@Param("innerCode") String innerCode, @Param("productTypeId") Integer productTypeId, @Param("taskStatus") Long taskStatus);
 
 
 }

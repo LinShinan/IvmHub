@@ -8,22 +8,22 @@ public class IvmConstants {
     /**
      * 工单类型：投放工单
      */
-    public static final Long TASK_TYPE_DEPLOY = 1L;
+    public static final Integer TASK_TYPE_DEPLOY = 1;
 
     /**
      * 工单类型：补货工单
      */
-    public static final Long TASK_TYPE_SUPPLY = 2L;
+    public static final Integer TASK_TYPE_SUPPLY = 2;
 
     /**
      * 工单类型：维修工单
      */
-    public static final Long TASK_TYPE_REPAIR = 3L;
+    public static final Integer TASK_TYPE_REPAIR = 3;
 
     /**
      * 工单类型：撤机工单
      */
-    public static final Long TASK_TYPE_REVOKE = 4L;
+    public static final Integer TASK_TYPE_REVOKE = 4;
 
     /**
      * 工单状态：创建(待处理)

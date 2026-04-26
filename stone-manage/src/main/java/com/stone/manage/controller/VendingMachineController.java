@@ -2,6 +2,8 @@ package com.stone.manage.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.stone.manage.domain.VO.VmDetailsVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,4 +115,16 @@ public class VendingMachineController extends BaseController
     {
         return toAjax(vendingMachineService.deleteVendingMachineByIds(ids));
     }
+
+    /**
+     * 根据innerCode查询设备详情
+     * @param innerCode
+     * @return
+     */
+    @GetMapping("/details/{innerCode}")
+    public AjaxResult getVmDetails(@PathVariable("innerCode") String innerCode){
+        VmDetailsVO vmDetailsVO = vendingMachineService.getVmDetails(innerCode);
+        return success(vmDetailsVO);
+    }
+
 }

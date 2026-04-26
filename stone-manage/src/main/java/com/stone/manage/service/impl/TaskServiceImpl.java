@@ -256,4 +256,10 @@ public class TaskServiceImpl implements ITaskService
         //3. 更新工单
         return taskMapper.updateTask(task);
     }
+
+    @Override
+    public int countFinishedByProductTypeId(String innerCode, Integer productTypeId) {
+        return taskMapper.countByProductTypeId(innerCode,productTypeId,IvmConstants.TASK_STATUS_FINISH);
+    }
+
 }

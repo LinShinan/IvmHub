@@ -68,4 +68,13 @@ public interface ITaskService
      * @return
      */
     int cancelTask(Task task);
+
+
+    /**
+     * 根据内码和产品类型统计完成的工单数量
+     * @param innerCode
+     * @param productTypeId
+     * @return
+     */
+    int countFinishedByProductTypeId(String innerCode, Integer productTypeId);
 }

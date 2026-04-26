@@ -1,6 +1,8 @@
 package com.stone.manage.service;
 
 import java.util.List;
+
+import com.stone.manage.domain.VO.VmDetailsVO;
 import com.stone.manage.domain.VendingMachine;
 
 /**
@@ -58,4 +60,11 @@ public interface IVendingMachineService
      * @return 结果
      */
     public int deleteVendingMachineById(Long id);
+
+    /**
+     * 根据id获取设备详情
+     * @param innerCode
+     * @return
+     */
+    VmDetailsVO getVmDetails(String innerCode);
 }

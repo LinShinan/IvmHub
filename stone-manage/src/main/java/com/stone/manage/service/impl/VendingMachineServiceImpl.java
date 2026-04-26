@@ -9,14 +9,16 @@ import com.stone.common.utils.DateUtils;
 import com.stone.common.utils.uuid.UUIDUtils;
 import com.stone.manage.domain.Channel;
 import com.stone.manage.domain.Node;
+import com.stone.manage.domain.VO.ProductSalesVO;
+import com.stone.manage.domain.VO.SalesStatisticsVO;
+import com.stone.manage.domain.VO.VmDetailsVO;
 import com.stone.manage.domain.VmType;
-import com.stone.manage.mapper.ChannelMapper;
-import com.stone.manage.mapper.NodeMapper;
-import com.stone.manage.mapper.VmTypeMapper;
+import com.stone.manage.mapper.*;
+import com.stone.manage.service.IOrderService;
+import com.stone.manage.service.ITaskService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.stone.manage.mapper.VendingMachineMapper;
 import com.stone.manage.domain.VendingMachine;
 import com.stone.manage.service.IVendingMachineService;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,15 @@ public class VendingMachineServiceImpl implements IVendingMachineService
 
     @Autowired
     private NodeMapper nodeMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
+    private IOrderService orderService;
+
+    @Autowired
+    private ITaskService taskService;
 
     /**
      * 查询设备管理
@@ -157,5 +168,27 @@ public class VendingMachineServiceImpl implements IVendingMachineService
     public int deleteVendingMachineById(Long id)
     {
         return vendingMachineMapper.deleteVendingMachineById(id);
+    }
+
+
+    /**
+     * 获取设备详情
+     * @param innerCode
+     * @return
+     */
+    @Override
+    public VmDetailsVO getVmDetails(String innerCode) {
+        VmDetailsVO vmDetailsVO = new VmDetailsVO();
+        //1.获取销售量（订单数量）和销售金额
+        SalesStatisticsVO sales = orderMapper.salesStatisticsByVmInnerCode(innerCode);
+        vmDetailsVO.setSalesVolume(sales.getSalesVolume());
+        vmDetailsVO.setSalesAmount(sales.getSalesAmount());
+        //2.获取补货次数和维修次数
+        vmDetailsVO.setSupplyCount(taskService.countFinishedByProductTypeId(innerCode,IvmConstants.TASK_TYPE_SUPPLY));
+        vmDetailsVO.setRepairCount(taskService.countFinishedByProductTypeId(innerCode,IvmConstants.TASK_TYPE_REPAIR));
+        //3.获取商品的月销量
+        List<ProductSalesVO> productSales = orderService.selectProductSalesListByMonth(innerCode);
+        vmDetailsVO.setProductSales(productSales);
+        return vmDetailsVO;
     }
 }
