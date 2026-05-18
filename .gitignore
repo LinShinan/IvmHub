@@ -47,7 +47,5 @@ nbdist/
 !*/build/*.xml
 
 
-# 为了安全起见，我把application.yml和application-druid.yml文件添加到.gitignore文件中
-# 不上传application.yml和application-druid.yml文件敏感信息
-application.yml
-application-druid.yml
+# 敏感配置，不上传
+application-secret.yml
